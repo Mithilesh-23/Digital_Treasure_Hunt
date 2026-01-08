@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Digital Treasure Hunt - Round 1</title>
+</head>
+<body>
+    <h3>Time Remaining: <span id="timer">{{ remaining }}</span> seconds</h3>
+
+<h2>Digital Treasure Hunt – Round 1</h2>
+
+<form method="post" id="quizForm">
+    {% csrf_token %}
+
+    <label><b>Participant Name:</b></label><br>
+    <input type="text" name="name" required>
+    <hr>
+
+    {% for q in questions %}
+        <p><b>{{ forloop.counter }}. {{ q.text }}</b></p>
+        <input type="radio" name="{{ q.id }}" value="1"> {{ q.option1 }}<br>
+        <input type="radio" name="{{ q.id }}" value="2"> {{ q.option2 }}<br>
+        <input type="radio" name="{{ q.id }}" value="3"> {{ q.option3 }}<br>
+        <input type="radio" name="{{ q.id }}" value="4"> {{ q.option4 }}<br>
+        <hr>
+    {% endfor %}
+
+<button type="submit" id="submitBtn">Submit</button>
+</form>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    let time = {{ remaining }};
+    let timer = document.getElementById("timer");
+    let form = document.getElementById("quizForm");
+
+    let interval = setInterval(function () {
+        if (time > 0) {
+            time--;
+            timer.innerText = time;
+        } else {
+            clearInterval(interval);
+            console.log("Time over → auto submit");
+            form.submit();   // ✅ FORCE SUBMIT
+        }
+    }, 1000);
+
+});
+</script>
+
+</body>
+</html>

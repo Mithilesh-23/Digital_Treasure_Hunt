@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Top 50 Qualifiers</title>
+</head>
+<body>
+
+<h2>🏆 Digital Treasure Hunt – Top 50 (Round 1)</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Score</th>
+        <th>Submission Time</th>
+    </tr>
+
+    {% for r in results %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ r.name }}</td>
+        <td>{{ r.score }}</td>
+        <td>{{ r.submitted_at }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+</body>
+</html>
