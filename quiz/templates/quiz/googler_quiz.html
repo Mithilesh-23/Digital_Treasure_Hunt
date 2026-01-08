@@ -1,43 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Round 1 | Digital Treasure Hunt</title>
+<title>Googler Round | Digital Treasure Hunt</title>
 
 <style>
-body{
-    margin:0; font-family:Segoe UI; background:radial-gradient(circle,#2b1b0f,#0f0a06); color:#f5e6b3;
-}
+body{margin:0;font-family:Segoe UI;background:radial-gradient(circle,#2b1b0f,#0f0a06);color:#f5e6b3;}
 .header{background:linear-gradient(90deg,#8b5a2b,#c9a24d);color:#2b1b0f;padding:15px;text-align:center;font-size:26px;font-weight:bold;}
 .box{max-width:900px;margin:30px auto;padding:20px;background:rgba(0,0,0,0.6);border-radius:12px;border:1px solid #c9a24d;}
 .btn{padding:12px 30px;font-size:18px;border:none;border-radius:30px;background:linear-gradient(90deg,#c9a24d,#ffd700);cursor:pointer;font-weight:bold;}
 .timer{text-align:center;color:#ffd700;font-size:20px;margin-top:10px;}
 .question{display:none;}
 .nav-btns{text-align:center;margin-top:20px;}
+img{border-radius:6px;border:1px solid gold;margin:8px 0;}
 </style>
 </head>
 
 <body>
 
-<div class="header">🏴‍☠️ Digital Treasure Hunt — Round 1</div>
+<div class="header">🔍 Googler Round — Digital Treasure Hunt</div>
 <div class="timer">⏱ Time Left: <span id="timer">{{ remaining }}</span> sec</div>
 
 <form method="post" id="quizForm">
 {% csrf_token %}
 
-<!-- 🔥 INSTRUCTION SCREEN -->
+<!-- INSTRUCTIONS -->
 <div class="box" id="instructionBox">
 <h2>📜 Instructions</h2>
 <ul>
-<li>Total questions must be answered.</li>
+<li>You may use Google.</li>
 <li>Do not refresh the page.</li>
 <li>Auto submit when time ends.</li>
-<li>No backtracking after submit.</li>
 </ul>
 <br>
 <button type="button" class="btn" onclick="showName()">I Understand, Proceed</button>
 </div>
 
-<!-- 🧑 NAME SCREEN -->
+<!-- NAME -->
 <div class="box" id="nameBox" style="display:none;">
 <h2>🧑 Enter Your Full Name</h2>
 <input type="text" name="name" required style="width:100%;padding:10px;border-radius:8px;">
@@ -45,18 +43,35 @@ body{
 <button type="button" class="btn" onclick="startQuiz()">Start Round</button>
 </div>
 
-<!-- 🎯 QUIZ SCREEN -->
+<!-- QUIZ -->
 <div id="quizBox" style="display:none;">
 
 {% for q in questions %}
 <div class="box question">
 
-<b>{{ forloop.counter }}. {{ q.text }}</b><br><br>
+<b>{{ forloop.counter }}. {{ q.text }}</b><br>
 
-<label><input type="radio" name="{{ q.id }}" value="1"> {{ q.option1 }}</label><br>
-<label><input type="radio" name="{{ q.id }}" value="2"> {{ q.option2 }}</label><br>
-<label><input type="radio" name="{{ q.id }}" value="3"> {{ q.option3 }}</label><br>
-<label><input type="radio" name="{{ q.id }}" value="4"> {{ q.option4 }}</label>
+{% if q.question_image %}
+<img src="{{ q.question_image.url }}" width="300"><br>
+{% endif %}
+
+{% if q.question_type == "MCQ" %}
+
+<label><input type="radio" name="{{ q.id }}" value="1"> {{ q.option1 }}
+{% if q.option1_image %}<br><img src="{{ q.option1_image.url }}" width="120">{% endif %}</label><br>
+
+<label><input type="radio" name="{{ q.id }}" value="2"> {{ q.option2 }}
+{% if q.option2_image %}<br><img src="{{ q.option2_image.url }}" width="120">{% endif %}</label><br>
+
+<label><input type="radio" name="{{ q.id }}" value="3"> {{ q.option3 }}
+{% if q.option3_image %}<br><img src="{{ q.option3_image.url }}" width="120">{% endif %}</label><br>
+
+<label><input type="radio" name="{{ q.id }}" value="4"> {{ q.option4 }}
+{% if q.option4_image %}<br><img src="{{ q.option4_image.url }}" width="120">{% endif %}</label>
+
+{% else %}
+<input type="text" name="{{ q.id }}" placeholder="Type answer here..." style="width:100%;padding:10px;border-radius:6px;">
+{% endif %}
 
 </div>
 {% endfor %}
@@ -88,7 +103,6 @@ function startQuiz(){
 function showQuestion(){
  for(let i=0;i<questions.length;i++)questions[i].style.display="none";
  questions[qIndex].style.display="block";
-
  document.getElementById("submitBtn").style.display =
  (qIndex==questions.length-1)?"inline-block":"none";
 }
