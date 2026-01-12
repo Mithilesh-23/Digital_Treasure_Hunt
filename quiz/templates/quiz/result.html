@@ -1,10 +1,150 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Result</title>
+    <title>Result | Digital Treasure Hunt</title>
+
+<style>
+body{
+ margin:0;
+ font-family:Segoe UI;
+ background:radial-gradient(circle at top,#0b1220,#020409);
+ color:#b7f7ff;
+ overflow:hidden;
+ text-align:center;
+}
+
+/* Cyber Grid */
+body::before{
+ content:"";
+ position:fixed;
+ inset:0;
+ background:
+  linear-gradient(rgba(0,255,255,0.05) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(0,255,255,0.05) 1px, transparent 1px);
+ background-size:40px 40px;
+ animation:gridMove 60s linear infinite;
+ pointer-events:none;
+}
+@keyframes gridMove{
+ from{background-position:0 0;}
+ to{background-position:800px 400px;}
+}
+
+/* Center Panel */
+.panel{
+ margin:120px auto;
+ width:90%;
+ max-width:600px;
+ padding:40px;
+ background:rgba(10,20,40,0.8);
+ border-radius:18px;
+ border:1px solid rgba(0,255,255,0.5);
+ box-shadow:0 0 40px rgba(0,255,255,0.3);
+ backdrop-filter:blur(8px);
+ animation:pop 0.6s ease;
+}
+
+@keyframes pop{
+ from{opacity:0; transform:scale(0.85);}
+ to{opacity:1; transform:scale(1);}
+}
+
+/* Title */
+h2{
+ margin-bottom:15px;
+ font-size:30px;
+ letter-spacing:1px;
+ text-shadow:0 0 15px cyan;
+}
+
+/* Score */
+.score{
+ font-size:48px;
+ color:#00ffe7;
+ margin:20px 0;
+ text-shadow:0 0 20px cyan;
+}
+
+/* Status */
+.status{
+ font-size:20px;
+ margin-top:10px;
+ opacity:0.9;
+}
+
+/* Loading Bar Effect */
+.bar{
+ margin:30px auto 10px;
+ width:80%;
+ height:10px;
+ border-radius:20px;
+ background:#021525;
+ overflow:hidden;
+}
+
+.bar span{
+ display:block;
+ height:100%;
+ width:0%;
+ background:linear-gradient(90deg,#00ffe7,#1fa2ff);
+ animation:load 2s forwards;
+}
+
+@keyframes load{
+ to{width:100%;}
+}
+
+/* Footer text */
+.note{
+ margin-top:20px;
+ font-size:14px;
+ opacity:0.7;
+ letter-spacing:1px;
+}
+
+/* Glowing Orbs */
+.orb{
+ position:absolute;
+ width:120px;
+ height:120px;
+ background:rgba(0,255,255,0.15);
+ border-radius:50%;
+ filter:blur(40px);
+ animation:float 12s infinite alternate;
+}
+.orb:nth-child(1){top:10%; left:10%;}
+.orb:nth-child(2){bottom:15%; right:15%; animation-delay:2s;}
+
+@keyframes float{
+ from{transform:translateY(0);}
+ to{transform:translateY(-80px);}
+}
+</style>
 </head>
+
 <body>
-    <h2>Quiz Submitted Successfully</h2>
-    <h3>Your Score: {{ score }}</h3>
+
+<div class="orb"></div>
+<div class="orb"></div>
+
+<div class="panel">
+
+    <h2> DATA UPLOADED SUCCESSFULLY</h2>
+
+    <div class="score">Uar Score : {{ score }}</div>
+
+    <div class="status">
+        Neural Evaluation Completed.<br>
+        Await Further Instructions...
+    </div>
+
+    <div class="bar"><span></span></div>
+
+    <div class="note">
+        Digital Treasure Hunt • AI Core System
+    </div>
+
+</div>
+
 </body>
 </html>
